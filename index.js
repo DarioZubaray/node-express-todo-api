@@ -1,13 +1,17 @@
 const express = require('express')
-const app = express()
+const { dbConnection } = require('./database/config')
 
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+  require('dotenv').config();
 }
 const port = process.env.PORT || 3000
+const app = express()
+dbConnection()
 
-app.get('/', require('./routes/todo'))
+app.use( express.json() )
+
+app.use('/api/todo', require('./routes/todo'))
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at ${require("os").hostname}:${port}`)
 })

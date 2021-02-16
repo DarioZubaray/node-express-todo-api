@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const { check } = require('express-validator')
 const { getTodos, crearTodo, getTodo, actualizarTodo, borrarTodo } = require('../controllers/todo');
 const { isDate } = require('../helpers/isDate');
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -15,7 +16,8 @@ router.post(
         check('datetime','La fecha es obligatoria').custom( isDate ),
         validarCampos
     ],
-    crearTodo)
+    crearTodo
+)
 router.put('/:id', actualizarTodo)
 router.delete('/:id', borrarTodo)
 

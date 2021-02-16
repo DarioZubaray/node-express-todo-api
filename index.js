@@ -1,5 +1,5 @@
 const express = require('express')
-const { dbConnection } = require('./database/config')
+const { dbConnection } = require('./src/database/config')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -10,7 +10,7 @@ dbConnection()
 
 app.use( express.json() )
 
-app.use('/api/todo', require('./routes/todo'))
+app.use('/api/todo', require('./src/routes/todo'))
 
 app.listen(port, () => {
   console.log(`Example app listening at ${require("os").hostname}:${port}`)

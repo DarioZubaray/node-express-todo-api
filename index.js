@@ -13,5 +13,5 @@ app.use( express.json() )
 app.use('/api/todo', require('./src/routes/todo'))
 
 app.listen(port, () => {
-  console.log(`Example app listening at ${require("os").hostname}:${port}`)
+  console.log(`Example app listening at ${require("ip").address()}:${port}`)
 })

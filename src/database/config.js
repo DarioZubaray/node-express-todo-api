@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('../config/logger');
 
 const dbConnection = async () => {
 
@@ -9,9 +10,9 @@ const dbConnection = async () => {
             useCreateIndex: true
         });
 
-        console.log('Base de datos online');
+        logger.info('Base de datos online');
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw new Error('Error al iniciar base de datos');
     }
 }

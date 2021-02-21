@@ -1,7 +1,9 @@
 const express = require('express')
+const logger = require('../config/logger')
 const Todo = require('../models/todo')
 
 const getTodos = async (req, res) => {
+    logger.info('Getting all todos')
     const todos = await Todo.find()
     res.status(200).json({
         todos
@@ -9,10 +11,11 @@ const getTodos = async (req, res) => {
 }
 
 const getTodo = async (req, res) => {
-
     const id = req.params.id
+    logger.info(`Getting todo by id: ${id}`)
     const todo = await Todo.findById(id)
 
+    logger.verbose(`todo obtained: ${todo}`)
     res.json({
         ok: true,
         todo
@@ -20,36 +23,38 @@ const getTodo = async (req, res) => {
 }
 
 const crearTodo = async ( req, res = express.response ) => {
-
+    logger.info('Creating a new todo')
     const todo = new Todo( req.body )
 
     try {
         const todoGuardado = await todo.save()
-
+        logger.verbose(`todo created: ${todoGuardado}`)
         res.json({
             ok: true,
             todo: todoGuardado
         })
 
     } catch (error) {
-        console.log(error)
+        const msg = 'Error al crear el todo'
+        logger.error(msg)
+        logger.error(error)
         res.status(500).json({
             ok: false,
-            msg: 'Error al crear el todo'
+            msg
         })
     }
 }
 
 const actualizarTodo = async ( req, res = express.response ) => {
-
     const todoId = req.params.id
+    logger.info(`Updating a todo, id: ${todoId}`)
 
     try {
         const todo = await Todo.findById( todoId )
 
         if ( !todo ) {
             const msg = `El todo no existe por el id: ${todoId}`
-            console.log(msg)
+            logger.error(msg)
             return res.status(404).json({
                 ok: false,
                 msg
@@ -61,7 +66,7 @@ const actualizarTodo = async ( req, res = express.response ) => {
         }
 
         const todoActualizado = await Todo.findByIdAndUpdate( todoId, nuevoTodo, { new: true } )
-
+        logger.verbose(`todo updated: ${todoActualizado}`)
         res.json({
             ok: true,
             todo: todoActualizado
@@ -69,9 +74,9 @@ const actualizarTodo = async ( req, res = express.response ) => {
 
         
     } catch (error) {
-        console.error(error)
         const msg = `Error al actualizar el todo por el id: ${todoId}`
-        console.log(msg)
+        logger.error(msg)
+        logger.error(error)
 
         res.status(500).json({
             ok: false,
@@ -81,15 +86,15 @@ const actualizarTodo = async ( req, res = express.response ) => {
 }
 
 const borrarTodo = async ( req, res = express.response ) => {
-
     const todoId = req.params.id
+    logger.info(`Deleting a todo, id: ${todoId}`)
 
     try {
         const todo = await Todo.findById( todoId )
 
         if ( !todo ) {
         const msg = `Evento no existe por el id: ${todoId}`
-        console.log(msg)
+        logger.error(msg)
             return res.status(404).json({
                 ok: false,
                 msg
@@ -98,12 +103,13 @@ const borrarTodo = async ( req, res = express.response ) => {
 
         await Todo.findByIdAndDelete( todoId )
 
+        logger.verbose(`Todo id: ${todoId} has been deleted`)
         res.json({ ok: true })
 
     } catch (error) {
-        console.log(error)
         const msg = 'Error al borrar el registro'
-        console.log(msg)
+        logger.error(msg)
+        logger.error(error)
         res.status(500).json({
             ok: false,
             msg

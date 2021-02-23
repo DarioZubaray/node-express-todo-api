@@ -2,12 +2,17 @@ const express = require('express');
 const logger = require('./src/config/logger');
 const { dbConnection } = require('./src/database/config')
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 const port = process.env.PORT || 3000
 const app = express()
 dbConnection()
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.use( express.json() )
 

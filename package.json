@@ -4,7 +4,7 @@
   "description": "Demo todo api rest server",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js --unhandled-rejections=strict",
+    "run": "node index.js",
     "debug": "nodemon index.js",
     "test": "mocha 'src/test/**/*.js' --recursive -t 120000 -c --exit"
   },
@@ -19,6 +19,7 @@
     "moment": "^2.29.1",
     "mongodb-memory-server": "^6.9.3",
     "mongoose": "^5.11.16",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3"
   },
   "devDependencies": {

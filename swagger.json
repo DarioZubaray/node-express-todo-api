@@ -1,0 +1,316 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Todo api-rest",
+    "description": "Todo CRUD application",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3001",
+  "basePath": "/api/todo",
+  "tags": [
+    {
+      "name": "Todo",
+      "description": "API for to do"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/all": {
+      "get": {
+        "tags": ["Todo"],
+        "summary": "Get all todos",
+        "description": "Get all todos",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Get all todos",
+            "schema": {
+              "$ref": "#/definitions/Todos"
+            }
+          }
+        }
+      }
+    },
+    "/findBy/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of todo that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Todo"],
+        "summary": "Get a unique todo by id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/StandarOkResponse"
+            }
+          },
+          "404": {
+            "description": "Todo not found",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "tags": ["Todo"],
+        "summary": "Create a new todo",
+        "description": "Create a new todo",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "todo",
+            "in": "body",
+            "description": "Todo that we want to create",
+            "schema": {
+              "$ref": "#/definitions/RequestedTodo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the todo just created",
+            "schema": {
+              "$ref": "#/definitions/StandarOkResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResponseValidated"
+            }
+          },
+          "500": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of todo that we want to find",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "summary": "Delete todo with given ID",
+        "tags": ["Todo"],
+        "responses": {
+          "200": {
+            "description": "Todo is deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "description": "Result of the delete operation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update todo with give ID",
+        "tags": ["Todo"],
+        "parameters": [
+          {
+            "name": "todo",
+            "in": "body",
+            "description": "Todo with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/RequestedTodo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo is updated",
+            "schema": {
+              "$ref": "#/definitions/StandarOkResponse"
+            }
+          },
+          "404": {
+            "description": "Todo not found",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Todo": {
+      "required": ["message", "finished", "datetime"],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Crear un nuevo TODO"
+        },
+        "finished": {
+          "type": "boolean",
+          "example": false
+        },
+        "datetime": {
+          "type": "string",
+          "example": "2021-02-16 01:03"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "RequestedTodo": {
+        "required": ["message", "finished", "datetime"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Crear un nuevo TODO"
+          },
+          "finished": {
+            "type": "boolean",
+            "example": false
+          },
+          "datetime": {
+            "type": "string",
+            "example": "2021-02-16 01:03"
+          }
+        }
+    },
+    "Todos": {
+      "type": "array",
+      "$ref": "#/definitions/Todo"
+    },
+    "StandarOkResponse": {
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "example": "true"
+        },
+        "todo": {
+          "type": "object",
+          "$ref": "#/definitions/Todo"
+        }
+      }
+    },
+    "StandarErrorResponse": {
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "example": "false"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "ResponseValidated": {
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "example": "false"
+        },
+        "errors": {
+          "type": "object",
+          "$ref": "#/definitions/Errors"
+        }
+      }
+    },
+    "Errors": {
+      "properties": {
+        "message": {
+          "type": "object",
+          "$ref": "#/definitions/Message"
+        },
+        "finished": {
+          "type": "object",
+          "$ref": "#/definitions/Finished"
+        },
+        "datetime": {
+          "type": "object",
+          "$ref": "#/definitions/Datetime"
+        }
+      }
+    },
+    "Message": {
+      "properties": {
+        "msg": {
+          "type": "string",
+          "example": "El mensaje es obligatorio"
+        },
+        "param": {
+          "type": "string",
+          "example": "msg"
+        },
+        "location": {
+          "type": "string",
+          "example": "body"
+        }
+      }
+    },
+    "Finished": {
+      "properties": {
+        "msg": {
+          "type": "string",
+          "example": "El estado terminado es obligatorio"
+        },
+        "param": {
+          "type": "string",
+          "example": "finished"
+        },
+        "location": {
+          "type": "string",
+          "example": "body"
+        }
+      }
+    },
+    "Datetime": {
+      "properties": {
+        "msg": {
+          "type": "string",
+          "example": "La fecha es obligatoria"
+        },
+        "param": {
+          "type": "string",
+          "example": "datetime"
+        },
+        "location": {
+          "type": "string",
+          "example": "body"
+        }
+      }
+    }
+  }
+}

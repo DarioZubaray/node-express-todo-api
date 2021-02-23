@@ -22,7 +22,6 @@ const dbConnection = () => {
 
 const mongooseConnect = async () => {
     try {
-        console.log(mongooseOpts)
         await mongoose.connect(process.env.DB_CCN, mongooseOpts)
     } catch (error) {
         logger.error(error);

@@ -13,13 +13,22 @@ const getTodos = async (req, res) => {
 const getTodo = async (req, res) => {
     const id = req.params.id
     logger.info(`Getting todo by id: ${id}`)
-    const todo = await Todo.findById(id)
+    try {
+        const todo = await Todo.findById(id)
+        logger.verbose(`todo obtained: ${todo}`)
+        res.json({
+            ok: true,
+            todo
+        })
+    } catch (error) {
+        const msg = `El todo no existe por el id: ${id}`
+        logger.error(msg)
+        res.status(404).json({
+            ok: false,
+            msg
+        })
+    }
 
-    logger.verbose(`todo obtained: ${todo}`)
-    res.json({
-        ok: true,
-        todo
-    })
 }
 
 const crearTodo = async ( req, res = express.response ) => {

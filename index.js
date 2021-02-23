@@ -16,3 +16,5 @@ app.use('/api/todo', require('./src/routes/todo'))
 app.listen(port, () => {
   logger.info(`Example app listening at ${require("ip").address()}:${port}`)
 })
+
+module.exports = app

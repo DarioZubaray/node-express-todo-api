@@ -14,9 +14,29 @@ describe('Todo api', () => {
         "datetime": moment().format('YYYY-MM-DD hh:mm')
     }
 
-    it('should create a new todo', (done) => {
+    const newUSer = {
+        name: 'todoUser',
+        email: 'todo@mail.com',
+        password: 'asd123'
+    }
 
+    let token;
+
+    before((done) => {
+        request(app).post('/api/auth/new')
+            .send(newUSer)
+            .then((res) => {
+                const body = res.body
+                token = body.token
+                done()
+            })
+            .catch((err) => done(err))
+    })
+
+    it('should create a new todo', (done) => {
+        console.log('debe crear un nuevo todo: ', token)
         request(app).post('/api/todo')
+            .set({'x-token': token})
             .send(newTodo)
             .then((res) => {
                 const body = res.body
@@ -41,6 +61,7 @@ describe('Todo api', () => {
 
     it('shouldn\'t created a new todo when the request body is empty', (done) => {
         request(app).post('/api/todo')
+            .set({'x-token': token})
             .then((res) => {
                 const body = res.body
                 expect(body).to.contain.property('ok')
@@ -73,6 +94,7 @@ describe('Todo api', () => {
     it('should get the todo created early', (done) => {
 
         request(app).get('/api/todo/all')
+            .set({'x-token': token})
             .then((res) => {
                 const body = res.body
                 expect(body).to.contain.property('todos')
@@ -91,6 +113,7 @@ describe('Todo api', () => {
     it('should get the todo by id', (done) => {
 
         request(app).get(`/api/todo/findBy/${newTodo.id}`)
+            .set({'x-token': token})
             .then((res) => {
                 const body = res.body
                 expect(body).to.contain.property('ok')
@@ -115,6 +138,7 @@ describe('Todo api', () => {
             "finished": true
         }
         request(app).put(`/api/todo/${newTodo.id}`)
+            .set({'x-token': token})
             .send(todoUpdated)
             .then((res) => {
                 const body = res.body
@@ -131,10 +155,11 @@ describe('Todo api', () => {
             })
             .catch((err) => done(err))
     })
-    
+
     it('should delete the todo by id', (done) => {
 
         request(app).delete(`/api/todo/${newTodo.id}`)
+            .set({'x-token': token})
             .then((res) => {
                 const body = res.body
                 expect(body).to.contain.property('ok')
@@ -143,4 +168,5 @@ describe('Todo api', () => {
             })
             .catch((err) => done(err))
     })
+
 })

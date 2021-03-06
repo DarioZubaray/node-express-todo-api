@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "9857d183-bc9b-48a2-8a05-826916df9b63",
+		"name": "Node Todo-apirest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User - /api/auth/new",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"dario\",\r\n    \"email\": \"dario@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/auth/new",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"new"
+					]
+				},
+				"description": "create a new user with name, email and password"
+			},
+			"response": []
+		},
+		{
+			"name": "User - /api/auth/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"dario@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/auth/",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						""
+					]
+				},
+				"description": "authenticate a user with email and password"
+			},
+			"response": []
+		},
+		{
+			"name": "User - /api/auth/renew",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTQ0MzkwODUsImV4cCI6MTYxNDQ0NjI4NX0.fdXRbdslD_8iglp8jXpsgmBJb2suSlDBLnxx7Q5CP54",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"julieta\",\r\n    \"email\": \"juli@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/auth/renew",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"renew"
+					]
+				},
+				"description": "Renew token"
+			},
+			"response": []
+		},
+		{
+			"name": "Todo - /api/todo/all",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/todo/all",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"todo",
+						"all"
+					]
+				},
+				"description": "Get all todos with a token"
+			},
+			"response": []
+		},
+		{
+			"name": "Todo /api/todo/findBy/:id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/todo/findBy/602aea08026867163479fd14",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"todo",
+						"findBy",
+						"602aea08026867163479fd14"
+					],
+					"query": [
+						{
+							"key": "x-token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get a TODO by id with a token"
+			},
+			"response": []
+		},
+		{
+			"name": "Todo - /api/todo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\": \"new todo\",\r\n    \"finished\": false,\r\n    \"datetime\": \"2021-03-06 01:03\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/todo",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"todo"
+					]
+				},
+				"description": "Create a new todo with a token"
+			},
+			"response": []
+		},
+		{
+			"name": "Todo - /api/todo/:id",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\": \"Todo - finished editado\",\r\n    \"finished\": true,\r\n    \"datetime\": \"2021-02-16 01:03\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/todo/604392b3eb898704e0fe90c2",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"todo",
+						"604392b3eb898704e0fe90c2"
+					]
+				},
+				"description": "Edit a todo with a token"
+			},
+			"response": []
+		},
+		{
+			"name": "Todo - /api/todo/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDNhNjExMWEzNjg4MzMwZjQ4NGM2YWMiLCJuYW1lIjoiZGFyaW8iLCJpYXQiOjE2MTUwNDA5NTgsImV4cCI6MTYxNTA0ODE1OH0.eqIfqzHBP_8yA9fbVQWCK8K35Qvdj4eY7UYF4NAHgVM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{node-express.todo.api}}/api/todo/604392b3eb898704e0fe90c2",
+					"host": [
+						"{{node-express.todo.api}}"
+					],
+					"path": [
+						"api",
+						"todo",
+						"604392b3eb898704e0fe90c2"
+					]
+				},
+				"description": "Delete a todo with a token"
+			},
+			"response": []
+		}
+	]
+}

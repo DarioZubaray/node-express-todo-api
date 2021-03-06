@@ -4,7 +4,7 @@ const Todo = require('../models/todo')
 
 const getTodos = async (req, res) => {
     logger.info('Getting all todos')
-    const todos = await Todo.find()
+    const todos = await Todo.find().populate('user','name')
     res.status(200).json({
         todos
     })
@@ -14,7 +14,7 @@ const getTodo = async (req, res) => {
     const id = req.params.id
     logger.info(`Getting todo by id: ${id}`)
     try {
-        const todo = await Todo.findById(id)
+        const todo = await Todo.findById(id).populate('user','name')
         logger.verbose(`todo obtained: ${todo}`)
         res.json({
             ok: true,
@@ -33,14 +33,28 @@ const getTodo = async (req, res) => {
 
 const crearTodo = async ( req, res = express.response ) => {
     logger.info('Creating a new todo')
-    const todo = new Todo( req.body )
+    let todo = new Todo( req.body )
 
     try {
+        todo.user = req.uid
         const todoGuardado = await todo.save()
-        logger.verbose(`todo created: ${todoGuardado}`)
-        res.json({
-            ok: true,
-            todo: todoGuardado
+        todoGuardado.populate('user','name', (err) => {
+
+            if (err) {
+                const msg = 'Error al obtener datos del usuario del todo'
+                logger.error(msg)
+                logger.error(error)
+                return res.status(500).json({
+                    ok: false,
+                    msg
+                })
+            }
+
+            logger.verbose(`todo created: ${todoGuardado}`)
+            res.json({
+                ok: true,
+                todo: todoGuardado
+            })
         })
 
     } catch (error) {
@@ -56,7 +70,8 @@ const crearTodo = async ( req, res = express.response ) => {
 
 const actualizarTodo = async ( req, res = express.response ) => {
     const todoId = req.params.id
-    logger.info(`Updating a todo, id: ${todoId}`)
+    const uid = req.uid
+    logger.info(`Updating a todo, id: ${todoId}, uid: ${uid}`)
 
     try {
         const todo = await Todo.findById( todoId )
@@ -71,7 +86,8 @@ const actualizarTodo = async ( req, res = express.response ) => {
         }
 
         const nuevoTodo = {
-            ...req.body
+            ...req.body,
+            user: uid
         }
 
         const todoActualizado = await Todo.findByIdAndUpdate( todoId, nuevoTodo, { new: true } )
@@ -96,7 +112,8 @@ const actualizarTodo = async ( req, res = express.response ) => {
 
 const borrarTodo = async ( req, res = express.response ) => {
     const todoId = req.params.id
-    logger.info(`Deleting a todo, id: ${todoId}`)
+    const uid = req.uid
+    logger.info(`Deleting a todo, id: ${todoId}, uid: ${uid}`)
 
     try {
         const todo = await Todo.findById( todoId )
@@ -108,6 +125,15 @@ const borrarTodo = async ( req, res = express.response ) => {
                 ok: false,
                 msg
             })
+        }
+
+        if ( todo.user.toString() !== uid ) {
+            const msg = 'No tiene privilegio de eliminar este evento'
+            logger.error(msg)
+            return res.status(401).json({
+                ok: false,
+                msg
+            });
         }
 
         await Todo.findByIdAndDelete( todoId )

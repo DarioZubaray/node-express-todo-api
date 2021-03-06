@@ -1,10 +1,12 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
-const { getTodos, crearTodo, getTodo, actualizarTodo, borrarTodo } = require('../controllers/todo');
-const { isDate } = require('../helpers/isDate');
-const { validarCampos } = require('../middlewares/validar-campos');
+const { getTodos, crearTodo, getTodo, actualizarTodo, borrarTodo } = require('../controllers/todo')
+const { isDate } = require('../helpers/isDate')
+const { validarCampos } = require('../middlewares/validar-campos')
+const { validarJWT } = require('../middlewares/validar-jwt')
 
 const router = Router()
+router.use( validarJWT )
 
 router.get('/all', getTodos)
 router.get('/findBy/:id', getTodo)

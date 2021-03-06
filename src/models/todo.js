@@ -13,6 +13,11 @@ const TodoSchema = Schema({
     datetime: {
         type: Date,
         required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
     }
 
 });

@@ -1,6 +1,6 @@
 {
   "name": "todo-apirest",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Demo todo api rest server",
   "main": "index.js",
   "scripts": {
@@ -13,10 +13,13 @@
   "author": "Dario Jose Zubaray",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "ip": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongodb-memory-server": "^6.9.3",
     "mongoose": "^5.11.16",

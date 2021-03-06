@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "title": "Todo api-rest",
     "description": "Todo CRUD application",
     "license": {
@@ -10,34 +10,53 @@
     }
   },
   "host": "localhost:3001",
-  "basePath": "/api/todo",
+  "basePath": "/api",
   "tags": [
     {
       "name": "Todo",
       "description": "API for to do"
+    },
+    {
+      "name": "User",
+      "description": "API for users"
     }
   ],
   "schemes": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/all": {
+    "/todo/all": {
       "get": {
         "tags": ["Todo"],
         "summary": "Get all todos",
         "description": "Get all todos",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Get all todos",
             "schema": {
               "$ref": "#/definitions/Todos"
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
           }
         }
       }
     },
-    "/findBy/{id}": {
+    "/todo/findBy/{id}": {
       "parameters": [
         {
           "name": "id",
@@ -50,11 +69,28 @@
       "get": {
         "tags": ["Todo"],
         "summary": "Get a unique todo by id",
+        "description": "Get a unique todo by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/StandarOkResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
             }
           },
           "404": {
@@ -66,13 +102,20 @@
         }
       }
     },
-    "/": {
+    "/todo/": {
       "post": {
         "tags": ["Todo"],
         "summary": "Create a new todo",
         "description": "Create a new todo",
         "produces": ["application/json"],
         "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          },
           {
             "name": "todo",
             "in": "body",
@@ -95,13 +138,19 @@
               "$ref": "#/definitions/ResponseValidated"
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
           "500": {
             "description": "Unexpected error"
           }
         }
       }
     },
-    "/{id}": {
+    "/todo/{id}": {
       "parameters": [
         {
           "name": "id",
@@ -114,6 +163,15 @@
       "delete": {
         "summary": "Delete todo with given ID",
         "tags": ["Todo"],
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Todo is deleted",
@@ -125,6 +183,12 @@
                   "description": "Result of the delete operation"
                 }
               }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
             }
           },
           "404": {
@@ -143,6 +207,13 @@
         "tags": ["Todo"],
         "parameters": [
           {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          },
+          {
             "name": "todo",
             "in": "body",
             "description": "Todo with new values of properties",
@@ -158,6 +229,12 @@
               "$ref": "#/definitions/StandarOkResponse"
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
           "404": {
             "description": "Todo not found",
             "schema": {
@@ -166,6 +243,115 @@
           },
           "500": {
             "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/auth/new": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "description": "User that we want to create",
+            "schema": {
+              "$ref": "#/definitions/RequestedNewUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the user just created",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/auth/": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login a user",
+        "description": "Login a user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "description": "User that we want to log in",
+            "schema": {
+              "$ref": "#/definitions/RequestedLoginUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the user just log in",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/auth/renew": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Renew token",
+        "description": "Renew token",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": true,
+            "description": "token we want to renew",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all todos",
+            "schema": {
+              "$ref": "#/definitions/RenewTokenResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/StandarErrorResponse"
+            }
           }
         }
       }
@@ -193,21 +379,21 @@
       }
     },
     "RequestedTodo": {
-        "required": ["message", "finished", "datetime"],
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Crear un nuevo TODO"
-          },
-          "finished": {
-            "type": "boolean",
-            "example": false
-          },
-          "datetime": {
-            "type": "string",
-            "example": "2021-02-16 01:03"
-          }
+      "required": ["message", "finished", "datetime"],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Crear un nuevo TODO"
+        },
+        "finished": {
+          "type": "boolean",
+          "example": false
+        },
+        "datetime": {
+          "type": "string",
+          "example": "2021-02-16 01:03"
         }
+      }
     },
     "Todos": {
       "type": "array",
@@ -309,6 +495,61 @@
         "location": {
           "type": "string",
           "example": "body"
+        }
+      }
+    },
+    "RequestedNewUser": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "RequestedLoginUser": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserResponse": {
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "RenewTokenResponse": {
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "token": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
         }
       }
     }

@@ -29,3 +29,9 @@ npm install
 - `dev` start a nodemon server
 - `test` run the test files with mocha
 - `test-with-coverage` run istambuljs in order to create a report for the coverage
+
+### Dockerizing application
+
+```
+docker-compese up
+```
